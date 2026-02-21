@@ -27,14 +27,14 @@
   },
   "keywords": [],
   "author": "SkillGo (https://skillgo.cn)",
-  "license": "AGPL-3.0",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/skillgo/skillgo.git"
+    "url": "https://github.com/hsliuping/skillgo.git"
   },
   "homepage": "https://skillgo.cn",
   "bugs": {
-    "url": "https://github.com/skillgo/skillgo/issues"
+    "url": "https://github.com/hsliuping/skillgo/issues"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.4",

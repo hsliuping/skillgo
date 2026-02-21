@@ -8,7 +8,7 @@
  *   node scripts/seed-local-skills.js [--dry-run] [--db=skillgo]
  *
  * 环境变量：与 server 相同（MYSQL_*）
- * 可选 REPO_URL：技能来源仓库，默认 https://github.com/skillgo/skillgo
+ * 可选 REPO_URL：技能来源仓库，默认 https://github.com/hsliuping/skillgo
  *
  * 注意：
  * - 数据库必须与 server 使用的 MYSQL_DATABASE 一致，否则前端查不到
@@ -26,7 +26,7 @@ const DRY_RUN = process.argv.includes('--dry-run')
 const dbArg = process.argv.find((a) => a.startsWith('--db='))
 if (dbArg) process.env.MYSQL_DATABASE = dbArg.split('=')[1]
 const SKILLS_DIR = path.join(__dirname, '..', 'skills')
-const DEFAULT_REPO_URL = 'https://github.com/skillgo/skillgo'
+const DEFAULT_REPO_URL = 'https://github.com/hsliuping/skillgo'
 
 const slugify = (value) => {
   const base = String(value || '')

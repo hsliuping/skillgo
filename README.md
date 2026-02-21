@@ -6,11 +6,10 @@ SkillGo 技能分享平台 - https://skillgo.cn
 
 ## 许可证
 
-本项目采用 [GNU AGPL-3.0](LICENSE) 开源协议。
+本项目采用 [Apache License 2.0](LICENSE) 开源协议。
 
-- **允许**：学习、修改、分发、个人/内部使用
-- **要求**：基于本项目的网络服务必须开源其修改后的完整源代码
-- **商业闭源使用**：需单独联系获取授权，请通过 [skillgo.cn](https://skillgo.cn) 或 GitHub Issues 联系
+- **允许**：学习、修改、分发、商业使用、专利授权
+- **要求**：保留版权声明和许可证，修改文件需注明变更
 - **品牌**：SkillGo 为项目商标，未经授权不得用于商业宣传或误导用户
 
 ## 架构图
@@ -166,4 +165,4 @@ curl -X POST http://localhost:3200/run \
 
 ---
 
-© 2025 SkillGo (https://skillgo.cn). 本项目采用 AGPL-3.0 协议。
+© 2025 SkillGo (https://skillgo.cn). 本项目采用 Apache-2.0 协议。
