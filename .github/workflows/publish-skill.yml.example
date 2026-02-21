@@ -1,0 +1,44 @@
+# SkillCN 技能自动发布 - 使用示例
+# 复制此文件为 publish-skill.yml 并配置 secrets
+#
+# 1. 在 SkillCN 平台获取 API Token（需登录）
+# 2. 在仓库 Settings -> Secrets 中添加 SKILLCN_TOKEN
+# 3. 修改 api_url 和 skill_path 为实际值
+
+name: Publish to SkillCN
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+      - '.github/workflows/publish-skill.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to SkillCN
+        env:
+          API_URL: ${{ secrets.SKILLCN_API_URL || 'https://skillcn.com' }}
+          API_TOKEN: ${{ secrets.SKILLCN_TOKEN }}
+          SKILL_PATH: ${{ vars.SKILL_PATH || 'skills' }}
+        run: |
+          if [ -z "$API_TOKEN" ]; then
+            echo "请配置 SKILLCN_TOKEN secret"
+            exit 1
+          fi
+          for dir in "$SKILL_PATH"/*/; do
+            if [ -f "${dir}SKILL.md" ]; then
+              name=$(basename "$dir")
+              echo "导入技能: $name"
+              repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+              curl -s -X POST "${API_URL}/api/skills/import" \
+                -H "Content-Type: application/json" \
+                -H "Authorization: Bearer ${API_TOKEN}" \
+                -d "{\"repoUrl\": \"${repo_url}\"}" || true
+            fi
+          done

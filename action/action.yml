@@ -1,0 +1,43 @@
+name: 'Publish to SkillGo'
+description: '将技能仓库中的 SKILL.md 发布到 SkillGo 平台'
+author: 'SkillGo'
+
+inputs:
+  api_url:
+    description: 'SkillGo API 地址'
+    required: false
+    default: 'https://skillgo.cn'
+  api_token:
+    description: 'API 认证 Token（需在 SkillGo 平台获取）'
+    required: true
+  skill_path:
+    description: '技能目录路径，相对于仓库根目录'
+    required: false
+    default: 'skills'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Publish skills
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.api_token }}" ]; then
+          echo "::error::api_token 未设置"
+          exit 1
+        fi
+        API_URL="${{ inputs.api_url }}"
+        TOKEN="${{ inputs.api_token }}"
+        SKILL_PATH="${{ inputs.skill_path }}"
+        BRANCH="${{ github.ref_name }}"
+        if [ "$SKILL_PATH" = "skills" ] || [ -z "$SKILL_PATH" ]; then
+          REPO_URL="https://github.com/${{ github.repository }}/tree/${BRANCH}"
+        else
+          REPO_URL="https://github.com/${{ github.repository }}/tree/${BRANCH}/${SKILL_PATH}"
+        fi
+        echo "导入仓库: $REPO_URL"
+        curl -s -X POST "${API_URL}/api/skills/import" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${TOKEN}" \
+          -d "{\"repoUrl\": \"${REPO_URL}\"}" && \
+        echo "导入完成" || \
+        echo "::error::导入失败，请检查 API_URL、Token 和仓库中是否包含 SKILL.md"

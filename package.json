@@ -1,0 +1,60 @@
+{
+  "name": "skillgo",
+  "version": "1.0.0",
+  "description": "技能分享平台 - https://skillgo.cn",
+  "main": "index.js",
+  "bin": {
+    "skillgo": "cli/bin/skillgo.js"
+  },
+  "scripts": {
+    "cli": "node cli/bin/skillgo.js",
+    "crawl": "node scripts/crawl-agent-skills.js",
+    "flow": "node scripts/run-flow.js",
+    "init-db": "node scripts/init-db.js",
+    "init-schema": "node scripts/init-schema.js",
+    "seed-local": "node scripts/seed-local-skills.js",
+    "pack:cli": "cd cli && npm pack",
+    "publish:cli": "cd cli && npm publish",
+    "dev:server": "node server/index.js",
+    "dev:runner": "node runner/index.js",
+    "dev:web": "vite --config web/vite.config.mjs",
+    "dev:skillgo": "vite --config web/vite.config.mjs --host",
+    "build:web": "vite build --config web/vite.config.mjs",
+    "preview:web": "vite preview --config web/vite.config.mjs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": [],
+  "author": "SkillGo (https://skillgo.cn)",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skillgo/skillgo.git"
+  },
+  "homepage": "https://skillgo.cn",
+  "bugs": {
+    "url": "https://github.com/skillgo/skillgo/issues"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.4",
+    "vite": "^5.4.21",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.28"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dompurify": "^3.3.1",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "markdown-it": "^14.1.1",
+    "mysql2": "^3.17.0",
+    "nodemailer": "^8.0.1",
+    "vue-router": "^5.0.2",
+    "zod": "^4.3.6"
+  }
+}

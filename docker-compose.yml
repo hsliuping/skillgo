@@ -1,0 +1,77 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-skillgo}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?请在 .env 中设置 MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    build: .
+    restart: unless-stopped
+    command: ["node", "server/index.js"]
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-skillgo}
+      MYSQL_PORT: 3306
+      PORT: 3100
+      JWT_SECRET: ${JWT_SECRET:?请在 .env 中设置 JWT_SECRET}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173}
+      RUN_ALLOW_INSTALL: "${RUN_ALLOW_INSTALL:-true}"
+      RUN_MAX_TIMEOUT_MS: "${RUN_MAX_TIMEOUT_MS:-30000}"
+      RUN_HTTP_ALLOWED_HOSTS: "${RUN_HTTP_ALLOWED_HOSTS:-}"
+      SANDBOX_ENABLED: "${SANDBOX_ENABLED:-false}"
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3100:3100"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  executor:
+    build: .
+    restart: unless-stopped
+    command: ["node", "runner/index.js"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+    environment:
+      MCP_BASE_URL: http://app:3100
+      RUNNER_PORT: 3200
+      RUN_ALLOW_INSTALL: "${RUN_ALLOW_INSTALL:-true}"
+      RUN_MAX_TIMEOUT_MS: "${RUN_MAX_TIMEOUT_MS:-30000}"
+      RUN_HTTP_ALLOWED_HOSTS: "${RUN_HTTP_ALLOWED_HOSTS:-}"
+      SANDBOX_ENABLED: "${SANDBOX_ENABLED:-false}"
+      SANDBOX_MEMORY: "${SANDBOX_MEMORY:-256m}"
+      SANDBOX_CPUS: "${SANDBOX_CPUS:-0.5}"
+      SANDBOX_NETWORK: "${SANDBOX_NETWORK:-none}"
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - "3200:3200"
+    depends_on:
+      - app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  mysql_data:

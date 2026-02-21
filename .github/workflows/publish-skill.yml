@@ -1,0 +1,24 @@
+# SkillGo 技能自动发布
+# 配置: Settings -> Secrets -> SKILLGO_TOKEN
+name: Publish to SkillGo
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+      - '.github/workflows/publish-skill.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to SkillGo
+        uses: ./action
+        with:
+          api_url: ${{ secrets.SKILLGO_API_URL || 'https://skillgo.cn' }}
+          api_token: ${{ secrets.SKILLGO_TOKEN }}
+          skill_path: skills

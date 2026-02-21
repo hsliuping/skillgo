@@ -1,0 +1,28 @@
+# 依赖
+node_modules/
+
+# 环境变量（含敏感信息）
+.env
+.env.local
+.env.*.local
+
+# 构建产物
+dist/
+web/dist/
+docs/.vitepress/dist/
+cli/*.tgz
+docs/.vitepress/cache/
+
+# 日志
+*.log
+npm-debug.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
