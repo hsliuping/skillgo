@@ -1,4 +1,14 @@
 ---
+name: akshare-stock-basic
+version: 1.0.0
+description: 使用 akshare 获取 A 股股票基础信息（最新价、总股本、流通股、市值、行业、上市时间等）
+runtime: python
+entrypoint: main.py
+---
+
+# A股股票基本信息
+
+---
 name: A股股票基本信息
 description: 使用 akshare 获取 A 股股票基础信息（最新价、总股本、流通股、市值、行业、上市时间等）
 category: 金融数据
@@ -64,3 +74,4 @@ tags: [akshare, 股票, 金融, Python]
   "上市时间": 20010827
 }
 ```
+

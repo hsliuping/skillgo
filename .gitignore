@@ -6,6 +6,9 @@ node_modules/
 .env.local
 .env.*.local
 
+# 测试/临时
+test-install/
+
 # 构建产物
 dist/
 web/dist/

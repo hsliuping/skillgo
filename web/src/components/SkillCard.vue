@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="`/skills/${skill.id}`" class="skill-card">
     <div class="card-top">
-      <h3 class="card-title">{{ skill.name }}</h3>
+      <h3 class="card-title">{{ skill.name }}<span v-if="installSlug" class="card-slug"> ({{ installSlug }})</span></h3>
       <div class="card-badges">
         <span v-if="skill.review_tier === 'human'" class="badge badge-reviewed">人工审核</span>
         <span v-else-if="skill.review_tier === 'ai'" class="badge badge-ai">AI审核</span>
@@ -45,6 +45,11 @@ const repoShort = computed(() => {
   const m = url.match(/github\.com\/([^/]+\/[^/]+?)(?:\/|\.git)?$/i) || url.match(/gitee\.com\/([^/]+\/[^/]+?)(?:\/|\.git)?$/i)
   return m ? m[1] : ''
 })
+
+const installSlug = computed(() => {
+  const s = props.skill?.slug || ''
+  return /^[a-z0-9][a-z0-9-]*$/.test(s) ? s : ''
+})
 </script>
 
 <style scoped>
@@ -81,6 +86,12 @@ const repoShort = computed(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.card-slug {
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.9em;
 }
 
 .card-badges {

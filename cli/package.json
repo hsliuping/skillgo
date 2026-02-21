@@ -1,16 +1,22 @@
 {
   "name": "skillgo",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "SkillGo 命令行工具 - 搜索、安装、管理 Agent 技能 (https://skillgo.cn)",
   "bin": {
     "skillgo": "bin/skillgo.js"
   },
-  "keywords": ["skillgo", "cli", "skill", "agent", "skillgo.cn"],
+  "keywords": [
+    "skillgo",
+    "cli",
+    "skill",
+    "agent",
+    "skillgo.cn"
+  ],
   "author": "",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hsliuping/skillgo.git"
+    "url": "git+https://github.com/hsliuping/skillgo.git"
   },
   "homepage": "https://skillgo.cn",
   "bugs": {

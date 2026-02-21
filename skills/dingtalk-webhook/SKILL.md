@@ -1,4 +1,5 @@
 ---
+id: dingtalk-webhook
 name: 钉钉机器人 Webhook
 description: 通过钉钉机器人 Webhook 发送消息到群聊
 category: 消息推送

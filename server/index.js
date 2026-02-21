@@ -106,6 +106,15 @@ const slugify = (value) => {
   return base || 'skill'
 }
 
+/** 获取安装用 slug（英文，避免编码问题）：优先 meta.id，其次从 source_path 提取目录名，最后 slugify(name) 并转 ASCII */
+const getInstallSlug = (meta, sourcePath) => {
+  const id = (meta.id || '').trim()
+  if (id && /^[a-z0-9][a-z0-9-]*$/.test(id)) return id
+  const m = (sourcePath || '').match(/\/([^/]+)\/SKILL\.md$/i)
+  if (m) return m[1].toLowerCase().replace(/[^a-z0-9-]/g, '-') || m[1]
+  return slugify(meta.name).replace(/[^\x00-\x7F]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'skill'
+}
+
 const normalizeStatus = (value) => {
   if (value === 'approved') return 'published'
   if (value === 'rejected') return 'rejected'
@@ -526,7 +535,7 @@ app.post('/api/skills/import', optionalUser, submitLimiter, validate(ImportSkill
   for (const file of skillFiles) {
     const markdown = await fetchRepoText(repoInfo, file.download_url)
     const meta = parseSkillMarkdown(markdown)
-    const baseSlug = slugify(meta.name)
+    const baseSlug = getInstallSlug(meta, file.path)
     const version = normalizeVersion(meta.version)
     const [existing] = await pool.query(
       'select id from skills where slug = ? and version = ?',

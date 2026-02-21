@@ -1,4 +1,5 @@
 ---
+id: wecom-webhook
 name: 企业微信 Webhook
 description: 通过企业微信 Webhook 发送消息到群聊
 category: 消息推送

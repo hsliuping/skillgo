@@ -40,7 +40,7 @@
 
         <!-- 标题区 -->
         <header class="skill-header">
-          <h1 class="skill-title">{{ skill.name }}</h1>
+          <h1 class="skill-title">{{ skill.name }}<span v-if="installSlug" class="skill-slug"> ({{ installSlug }})</span></h1>
           <div v-if="skill.repo_url || skill.submitter_username" class="source-author-row">
             <span v-if="skill.submitter_username" class="source-item">
               <span class="source-label">作者</span>
@@ -286,10 +286,18 @@ const loadRepoStats = async () => {
   } catch {}
 }
 
+const installSlug = computed(() => {
+  const s = skill.value?.slug || ''
+  if (/^[a-z0-9][a-z0-9-]*$/.test(s)) return s
+  const path = skill.value?.source_path || ''
+  const m = path.match(/\/([^/]+)\/SKILL\.md$/i)
+  return m ? m[1] : ''
+})
+
 const installCommand = computed(() => {
   if (!skill.value) return ''
   const pm = packageManagers.find((p) => p.id === installPm.value) || packageManagers[1]
-  const slug = skill.value.slug
+  const slug = installSlug.value || skill.value.slug
   const ver = skill.value.version
   return `${pm.cmd} ${slug}@${ver || '1.0.0'}`
 })
@@ -548,6 +556,12 @@ onMounted(loadSkill)
   color: var(--text-color);
   margin: 0 0 12px 0;
   line-height: 1.3;
+}
+
+.skill-slug {
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.85em;
 }
 
 .source-author-row {

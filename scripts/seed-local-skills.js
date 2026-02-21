@@ -37,6 +37,14 @@ const slugify = (value) => {
   return base || 'skill'
 }
 
+const getInstallSlug = (meta, sourcePath) => {
+  const id = (meta.id || '').trim()
+  if (id && /^[a-z0-9][a-z0-9-]*$/.test(id)) return id
+  const m = (sourcePath || '').match(/\/([^/]+)\/SKILL\.md$/i)
+  if (m) return m[1].toLowerCase().replace(/[^a-z0-9-]/g, '-') || m[1]
+  return slugify(meta.name).replace(/[^\x00-\x7F]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'skill'
+}
+
 const normalizeVersion = (value) => {
   const raw = String(value || '').trim()
   return raw || '1.0.0'
@@ -109,7 +117,7 @@ async function main() {
     for (const file of skillFiles) {
       const markdown = fs.readFileSync(file.path, 'utf8')
       const meta = parseSkillMarkdown(markdown)
-      const baseSlug = slugify(meta.name)
+      const baseSlug = getInstallSlug(meta, file.sourcePath)
       const version = normalizeVersion(meta.version)
 
       const [existing] = await pool.query(

@@ -13,6 +13,7 @@
     "init-db": "node scripts/init-db.js",
     "init-schema": "node scripts/init-schema.js",
     "seed-local": "node scripts/seed-local-skills.js",
+    "migrate-slug": "node scripts/migrate-slug-to-en.js",
     "pack:cli": "cd cli && npm pack",
     "publish:cli": "cd cli && npm publish",
     "dev:server": "node server/index.js",

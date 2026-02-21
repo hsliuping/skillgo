@@ -17,14 +17,17 @@ cd my-skill
 
 ```markdown
 ---
-name: my-skill
+id: my-skill
+name: 我的技能
 description: 这是一个示例技能
 ---
 
-# My Skill
+# 我的技能
 
 这里写下你的指令...
 ```
+
+> **提示**：`id` 为英文安装标识，用于 `skillgo install id@version`，避免中文编码问题。若省略，将根据目录名自动生成。
 
 ## 3. 使用技能
 
